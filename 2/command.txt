@@ -1,0 +1,24 @@
+2. Нормалізуйте таблицю infectious_cases до 3ї нормальної форми. 
+Збережіть у цій же схемі дві таблиці з нормалізованими даними.
+
+INSERT INTO countries (entity, code)
+SELECT DISTINCT Entity, Code
+FROM infectious_cases;
+
+INSERT INTO cases (country_id, year, number_yaws, polio_cases, cases_guinea_worm, number_rabies, number_malaria, number_hiv, number_tuberculosis, number_smallpox, number_cholera_cases)
+SELECT 
+c.country_id, 
+i.Year, 
+NULLIF(i.Number_yaws, ''), 
+NULLIF(i.polio_cases, ''), 
+NULLIF(i.cases_guinea_worm, ''), 
+NULLIF(i.Number_rabies, ''), 
+NULLIF(i.Number_malaria, ''), 
+NULLIF(i.Number_hiv, ''), 
+NULLIF(i.Number_tuberculosis, ''), 
+NULLIF(i.Number_smallpox, ''), 
+NULLIF(i.Number_cholera_cases, '')
+FROM 
+infectious_cases i
+JOIN 
+countries c ON i.Entity = c.entity AND i.Code = c.code;
